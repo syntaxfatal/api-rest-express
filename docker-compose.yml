@@ -1,0 +1,31 @@
+version: "3.6"
+
+services:
+  db:
+    platform: linux/x86_64
+    image: mysql:5.7
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    #volumes:
+    #  - ./db:/docker-entrypoint-initdb.d:Z,ro
+    environment:
+      - MYSQL_ROOT_PASSWORD=example
+      - MYSQL_DATABASE=example
+  app:
+    build: 
+      context: .
+    depends_on:
+      - db
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=example
+      - DB_NAME=example
+      - DB_PORT=3306
+
+
+  
